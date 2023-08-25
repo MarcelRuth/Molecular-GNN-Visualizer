@@ -3,9 +3,9 @@ import os
 import torch.nn.functional as F
 import imageio
 
-def plot_graph_mayavi(data, model, layer, molecule_name, atom_list=None):
+def plot_graph_mayavi(data, model, layer, molecule_name):
     mlab.clf()
-
+    model.eval()
     x, edge_index = data.x, data.edge_index
     for i in range(layer):
         x = model.convs[i](x, edge_index)
@@ -24,7 +24,7 @@ def plot_graph_mayavi(data, model, layer, molecule_name, atom_list=None):
     mlab.text(0.5, 0.95, f'{molecule_name} Layer: {layer}', width=1, color=(1, 1, 1))
     mlab.colorbar(pts, title="Color Scale", orientation='vertical')
 
-def save_frames(inputs, model, molecule_names, folder="frames", atom_list=None):
+def save_frames(inputs, model, molecule_names, folder="frames"):
     mlab.options.offscreen = True
 
     if not os.path.exists(folder):
@@ -35,7 +35,7 @@ def save_frames(inputs, model, molecule_names, folder="frames", atom_list=None):
     frame_idx = 0
     for idx, data in enumerate(inputs):
         for layer in range(1, len(model.convs) + 1):
-            plot_graph_mayavi(data, model, layer, molecule_names[idx], atom_list=atom_list[idx])
+            plot_graph_mayavi(data, model, layer, molecule_names[idx])
             mlab.savefig(os.path.join(folder, f"frame_{frame_idx:04}.png"), size=(1920, 1080))
             frame_idx += 1
 

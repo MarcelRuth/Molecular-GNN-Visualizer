@@ -21,7 +21,7 @@ model_path = 'models/CBS23_08_2023_17_56.pt'
 model_mode = 'CBS' # or GNN
 
 if model_mode == 'CBS':
-    data_list, atom_list = get_data(model_mode, molecules)
+    data_list, _ = get_data(model_mode, molecules)
 else:
     data_list = get_data(model_mode, molecules)
 
@@ -45,5 +45,5 @@ if len(model_path) != 0:
 
 # Save individual frames
 print('Starting animation ...')
-save_frames(data_list, model, molecule_names, atom_list=atom_list)
+save_frames(data_list, model, molecule_names)
 frames_to_video(output_video=f'{model_mode}.mp4')
